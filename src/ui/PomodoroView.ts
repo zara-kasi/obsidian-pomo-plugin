@@ -8,7 +8,6 @@ export const VIEW_TYPE_POMODORO = "pomodoro-timer-view";
 
 export class PomodoroView extends ItemView {
 	private timer: PomodoroTimer;
-	private containerEl: HTMLElement;
 	private timerDisplayEl: HTMLElement;
 	private sessionLabelEl: HTMLElement;
 	private progressBarEl: HTMLElement;
@@ -34,7 +33,6 @@ export class PomodoroView extends ItemView {
 	}
 
 	async onOpen(): Promise<void> {
-		this.containerEl = this.contentEl;
 		this.containerEl.empty();
 		this.containerEl.addClass("pomodoro-container");
 
