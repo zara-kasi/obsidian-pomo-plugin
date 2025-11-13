@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "obsidian-pomo-plugin",
+	"name": "Pomodoro Timer",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "A simple Pomodoro timer with work sessions and breaks. Stay focused and productive!",
+	"author": "Zarakasi",
+	"authorUrl": "https://github.com/zara-kasi",
 	"isDesktopOnly": false
 }
