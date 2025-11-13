@@ -60,8 +60,8 @@ export class PomodoroView extends ItemView {
 			}
 
 			if (this.plugin.settings.playSound) {
-				// Play system notification sound
-				const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSx+zPLTgjMGHm7A7+OZRA0PWqvm8KtVFw1Jp+Hxv2whBSt8yvLWhTQHGW66"/>
+				// Play a simple beep sound
+				this.playNotificationSound();
 			}
 		});
 	}
@@ -150,5 +150,28 @@ export class PomodoroView extends ItemView {
 
 	getTimer(): PomodoroTimer {
 		return this.timer;
+	}
+
+	private playNotificationSound(): void {
+		// Create a simple beep using Web Audio API
+		try {
+			const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+			const oscillator = audioContext.createOscillator();
+			const gainNode = audioContext.createGain();
+
+			oscillator.connect(gainNode);
+			gainNode.connect(audioContext.destination);
+
+			oscillator.frequency.value = 800;
+			oscillator.type = 'sine';
+
+			gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+			gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+			oscillator.start(audioContext.currentTime);
+			oscillator.stop(audioContext.currentTime + 0.5);
+		} catch (error) {
+			console.error('Failed to play notification sound:', error);
+		}
 	}
 }
