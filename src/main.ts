@@ -47,13 +47,18 @@ export default class PomodoroPlugin extends Plugin {
 		let leaf = workspace.getLeavesOfType(VIEW_TYPE_POMODORO)[0];
 
 		if (!leaf) {
-			leaf = workspace.getRightLeaf(false);
-			await leaf.setViewState({
-				type: VIEW_TYPE_POMODORO,
-				active: true,
-			});
+			const newLeaf = workspace.getRightLeaf(false);
+			if (newLeaf) {
+				leaf = newLeaf;
+				await leaf.setViewState({
+					type: VIEW_TYPE_POMODORO,
+					active: true,
+				});
+			}
 		}
 
-		workspace.revealLeaf(leaf);
+		if (leaf) {
+			workspace.revealLeaf(leaf);
+		}
 	}
 }
