@@ -257,8 +257,8 @@ export class PomodoroView extends ItemView {
 		// Check if vibration API is supported
 		if ('vibrate' in navigator) {
 			try {
-				// Vibrate in a pattern: vibrate for 200ms, pause 100ms, vibrate 200ms
-				navigator.vibrate([200, 100, 200]);
+				// Vibrate in a pattern: vibrate for 100ms, pause 100ms, vibrate 100ms
+				navigator.vibrate([100, 100, 100]);
 			} catch (error) {
 				console.error('Failed to vibrate:', error);
 			}
