@@ -307,11 +307,17 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		.setName(name)
 		.setDesc(desc);
 
+	// Force the entire setting row to be flexbox horizontal layout
+	setting.settingEl.style.display = "flex";
+	setting.settingEl.style.flexDirection = "row";
+	setting.settingEl.style.alignItems = "center";
+	setting.settingEl.style.justifyContent = "space-between";
+
 	// Constrain the info section width so it doesn't invade the control area
 	const infoEl = setting.settingEl.querySelector('.setting-item-info') as HTMLElement;
 	if (infoEl) {
-		infoEl.style.maxWidth = "60%"; // Or whatever percentage works best
-		infoEl.style.flexShrink = "1";
+		infoEl.style.flex = "1";
+		infoEl.style.maxWidth = "60%";
 	}
 
 	// Ensure control area stays on the right
