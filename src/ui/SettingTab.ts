@@ -166,6 +166,95 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
+		containerEl.createEl("h3", { text: "Custom notification messages" });
+
+		// Work session complete notification
+		new Setting(containerEl)
+			.setName("Work session complete title")
+			.setDesc("Title for the notification when a work session ends")
+			.addText((text) =>
+				text
+					.setPlaceholder("Work Session Complete")
+					.setValue(this.plugin.settings.workCompleteTitle)
+					.onChange(async (value) => {
+						this.plugin.settings.workCompleteTitle = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName("Work session complete message")
+			.setDesc("Message for the notification when a work session ends")
+			.addTextArea((text) => {
+				text
+					.setPlaceholder("Great job! Time for a break.")
+					.setValue(this.plugin.settings.workCompleteMessage)
+					.onChange(async (value) => {
+						this.plugin.settings.workCompleteMessage = value;
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.rows = 2;
+				text.inputEl.cols = 40;
+			});
+
+		// Short break complete notification
+		new Setting(containerEl)
+			.setName("Short break complete title")
+			.setDesc("Title for the notification when a short break ends")
+			.addText((text) =>
+				text
+					.setPlaceholder("Short Break Complete")
+					.setValue(this.plugin.settings.shortBreakCompleteTitle)
+					.onChange(async (value) => {
+						this.plugin.settings.shortBreakCompleteTitle = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName("Short break complete message")
+			.setDesc("Message for the notification when a short break ends")
+			.addTextArea((text) => {
+				text
+					.setPlaceholder("Break's over! Ready to focus?")
+					.setValue(this.plugin.settings.shortBreakCompleteMessage)
+					.onChange(async (value) => {
+						this.plugin.settings.shortBreakCompleteMessage = value;
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.rows = 2;
+				text.inputEl.cols = 40;
+			});
+
+		// Long break complete notification
+		new Setting(containerEl)
+			.setName("Long break complete title")
+			.setDesc("Title for the notification when a long break ends")
+			.addText((text) =>
+				text
+					.setPlaceholder("Long Break Complete")
+					.setValue(this.plugin.settings.longBreakCompleteTitle)
+					.onChange(async (value) => {
+						this.plugin.settings.longBreakCompleteTitle = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName("Long break complete message")
+			.setDesc("Message for the notification when a long break ends")
+			.addTextArea((text) => {
+				text
+					.setPlaceholder("Refreshed and ready! Let's get back to work.")
+					.setValue(this.plugin.settings.longBreakCompleteMessage)
+					.onChange(async (value) => {
+						this.plugin.settings.longBreakCompleteMessage = value;
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.rows = 2;
+				text.inputEl.cols = 40;
+			});
+
 		containerEl.createEl("h3", { text: "Progress bar colors" });
 
 		// Work session color
