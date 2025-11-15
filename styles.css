@@ -30,7 +30,7 @@
 }
 
 .pomodoro-progress-circle {
-	transition: stroke-dashoffset 0.3s linear;
+	transition: stroke-dashoffset 1s linear;
 }
 
 .pomodoro-progress-circle.work {
