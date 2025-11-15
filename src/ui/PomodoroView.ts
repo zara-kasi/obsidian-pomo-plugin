@@ -45,40 +45,38 @@ export class PomodoroView extends ItemView {
 	}
 
 	private setupTimerCallbacks(): void {
-		this.timer.onTick((data) => {
-			this.updateUI(data);
-		});
+	this.timer.onTick((data) => {
+		this.updateUI(data);
+	});
 
-		this.timer.onComplete((sessionType) => {
-			if (this.plugin.settings.showNotifications) {
-				const { title, message } = this.getNotificationText(sessionType);
-				
-				// Create a notification with custom title and message
-				const fragment = document.createDocumentFragment();
-				
-				if (title) {
-					const titleEl = fragment.createEl("strong");
-					titleEl.textContent = title;
-					fragment.createEl("br");
-				}
-				
-				if (message) {
-					const messageEl = fragment.createEl("span");
-					messageEl.textContent = message;
-				}
-				
-				new Notice(fragment);
+	this.timer.onComplete((sessionType) => {
+		if (this.plugin.settings.showNotifications) {
+			const { title, message } = this.getNotificationText(sessionType);
+			
+			// Combine title and message into a single string
+			let notificationText = "";
+			if (title && message) {
+				notificationText = `${title}\n${message}`;
+			} else if (title) {
+				notificationText = title;
+			} else if (message) {
+				notificationText = message;
 			}
+			
+			if (notificationText) {
+				new Notice(notificationText);
+			}
+		}
 
-			if (this.plugin.settings.playSound) {
-				this.playNotificationSound();
-			}
+		if (this.plugin.settings.playSound) {
+			this.playNotificationSound();
+		}
 
-			if (this.plugin.settings.playVibration) {
-				this.playVibration();
-			}
-		});
-	}
+		if (this.plugin.settings.playVibration) {
+			this.playVibration();
+		}
+	});
+}
 
 	private getNotificationText(sessionType: SessionType): { title: string; message: string } {
 		const settings = this.plugin.settings;
