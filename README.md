@@ -6,6 +6,11 @@ A Pomodoro timer widget for Obsidian that lives in your sidebar.
 
 Pomo adds a clean, minimal Pomodoro clock widget to your Obsidian sidebar. It helps you stay focused and productive by breaking your work into manageable intervals.
 
+## How it Works
+
+Start a 25-minute work session, take a 5-minute break, repeat. After 4 work sessions, take a longer 15-minute break. Everything happens automatically — just focus on your work.
+
+
 ## Features
 
 - **Auto-start on Load** — Open Obsidian, and the timer starts automatically. No need to click anything—just open your vault and you're already working.
@@ -22,14 +27,12 @@ Pomo adds a clean, minimal Pomodoro clock widget to your Obsidian sidebar. It he
 
 - **Vibration Support** — Your device vibrates when a session completes (tested on Android). Useful when you're wearing headphones or have notifications muted.
 
-## How it Works
-
-Start a 25-minute work session, take a 5-minute break, repeat. After 4 work sessions, take a longer 15-minute break. Everything happens automatically — just focus on your work.
-
 ---
-
-**Acknowledgments**: This plugin is greatly inspired by Liam Cain's Calendar plugin. I tried to create a similar sidebar widget experience for the Pomodoro timer.
 
 ## License
 
-MIT
+Pomo is released under the MIT License.  [MIT License](./LICENSE).  
+You are free to use, modify, and distribute Cassette in accordance with the license terms.  
+© 2025 [Zara Kasi](https://github.com/zara-kasi)
+
+---
