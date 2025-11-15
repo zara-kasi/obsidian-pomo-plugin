@@ -144,6 +144,22 @@ export class PomodoroView extends ItemView {
 		button.addEventListener("click", onClick);
 	}
 
+	private getSessionColor(sessionType: SessionType): string {
+		// Get custom color from settings or fall back to accent color
+		let customColor = "";
+		
+		if (sessionType === SessionType.WORK) {
+			customColor = this.plugin.settings.workColor;
+		} else if (sessionType === SessionType.SHORT_BREAK) {
+			customColor = this.plugin.settings.shortBreakColor;
+		} else if (sessionType === SessionType.LONG_BREAK) {
+			customColor = this.plugin.settings.longBreakColor;
+		}
+
+		// Return custom color if set, otherwise return CSS variable for accent color
+		return customColor || "var(--interactive-accent)";
+	}
+
 	private updateUI(data: TimerData): void {
 		// Update session label (no emojis)
 		const label = SESSION_LABELS[data.sessionType];
@@ -152,7 +168,7 @@ export class PomodoroView extends ItemView {
 		// Update timer display
 		this.timerDisplayEl.textContent = formatTime(data.timeRemaining);
 
-		// Update circular progress - FIXED: arc shrinks as time decreases
+		// Update circular progress - arc shrinks as time decreases
 		const progress = data.timeRemaining / data.totalTime; // Remaining ratio
 		const radius = 120;
 		const circumference = 2 * Math.PI * radius;
@@ -160,6 +176,10 @@ export class PomodoroView extends ItemView {
 		
 		this.progressCircleEl.style.strokeDasharray = `${circumference}`;
 		this.progressCircleEl.style.strokeDashoffset = `${offset}`;
+
+		// Update progress color based on session type and user settings
+		const color = this.getSessionColor(data.sessionType);
+		this.progressCircleEl.style.stroke = color;
 
 		// Update controls
 		this.createControls();
