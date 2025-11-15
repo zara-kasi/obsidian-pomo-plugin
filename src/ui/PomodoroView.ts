@@ -58,8 +58,11 @@ export class PomodoroView extends ItemView {
 			}
 
 			if (this.plugin.settings.playSound) {
-				// Play a simple beep sound
 				this.playNotificationSound();
+			}
+
+			if (this.plugin.settings.playVibration) {
+				this.playVibration();
 			}
 		});
 	}
@@ -212,6 +215,18 @@ export class PomodoroView extends ItemView {
 			oscillator.stop(audioContext.currentTime + 0.5);
 		} catch (error) {
 			console.error('Failed to play notification sound:', error);
+		}
+	}
+
+	private playVibration(): void {
+		// Check if vibration API is supported
+		if ('vibrate' in navigator) {
+			try {
+				// Vibrate in a pattern: vibrate for 200ms, pause 100ms, vibrate 200ms
+				navigator.vibrate([200, 100, 200]);
+			} catch (error) {
+				console.error('Failed to vibrate:', error);
+			}
 		}
 	}
 }
