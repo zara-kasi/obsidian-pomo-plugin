@@ -22,6 +22,23 @@ export default class PomodoroPlugin extends Plugin {
 
 		// Add settings tab
 		this.addSettingTab(new PomodoroSettingTab(this.app, this));
+
+		// Automatically add view to sidebar on plugin load (but don't focus it)
+		this.app.workspace.onLayoutReady(() => {
+			// Check if the view already exists
+			const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
+			
+			// Only create the view if it doesn't exist
+			if (existing.length === 0) {
+				const leaf = this.app.workspace.getRightLeaf(false);
+				if (leaf) {
+					leaf.setViewState({
+						type: VIEW_TYPE_POMODORO,
+						active: false, // Don't activate/focus it
+					});
+				}
+			}
+		});
 	}
 
 	async onunload() {
