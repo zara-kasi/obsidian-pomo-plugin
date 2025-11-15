@@ -1,7 +1,7 @@
 {
   "id": "obsidian-pomo-plugin",
   "name": "Pomo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "minAppVersion": "0.15.0",
   "description": "A simple Pomodoro timer with work sessions and breaks. Stay focused and productive!",
   "author": "Zarakasi",
