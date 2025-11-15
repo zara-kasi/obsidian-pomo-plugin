@@ -56,7 +56,7 @@ export default class PomodoroPlugin extends Plugin {
 		if (leaf) {
 			workspace.revealLeaf(leaf);
 			
-			// If auto-start is enabled, start the timer
+			// If auto-start is enabled, start the timer when view is opened
 			if (this.settings.autoStartOnLoad) {
 				const view = leaf.view;
 				if (view instanceof PomodoroView) {
