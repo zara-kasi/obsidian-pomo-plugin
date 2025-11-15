@@ -6,12 +6,6 @@ export const SESSION_LABELS: Record<SessionType, string> = {
 	[SessionType.LONG_BREAK]: "Long Break",
 };
 
-export const SESSION_EMOJIS: Record<SessionType, string> = {
-	[SessionType.WORK]: "🍅",
-	[SessionType.SHORT_BREAK]: "☕",
-	[SessionType.LONG_BREAK]: "🌴",
-};
-
 export function formatTime(seconds: number): string {
 	const mins = Math.floor(seconds / 60);
 	const secs = seconds % 60;
