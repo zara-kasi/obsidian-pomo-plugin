@@ -51,10 +51,23 @@ export class PomodoroView extends ItemView {
 
 		this.timer.onComplete((sessionType) => {
 			if (this.plugin.settings.showNotifications) {
-				const message = sessionType === SessionType.WORK
-					? "Work session completed! Time for a break."
-					: "Break is over! Ready to focus?";
-				new Notice(message);
+				const { title, message } = this.getNotificationText(sessionType);
+				
+				// Create a notification with custom title and message
+				const fragment = document.createDocumentFragment();
+				
+				if (title) {
+					const titleEl = fragment.createEl("strong");
+					titleEl.textContent = title;
+					fragment.createEl("br");
+				}
+				
+				if (message) {
+					const messageEl = fragment.createEl("span");
+					messageEl.textContent = message;
+				}
+				
+				new Notice(fragment);
 			}
 
 			if (this.plugin.settings.playSound) {
@@ -65,6 +78,30 @@ export class PomodoroView extends ItemView {
 				this.playVibration();
 			}
 		});
+	}
+
+	private getNotificationText(sessionType: SessionType): { title: string; message: string } {
+		const settings = this.plugin.settings;
+		
+		switch (sessionType) {
+			case SessionType.WORK:
+				return {
+					title: settings.workCompleteTitle,
+					message: settings.workCompleteMessage
+				};
+			case SessionType.SHORT_BREAK:
+				return {
+					title: settings.shortBreakCompleteTitle,
+					message: settings.shortBreakCompleteMessage
+				};
+			case SessionType.LONG_BREAK:
+				return {
+					title: settings.longBreakCompleteTitle,
+					message: settings.longBreakCompleteMessage
+				};
+			default:
+				return { title: "", message: "" };
+		}
 	}
 
 	private createUI(): void {
