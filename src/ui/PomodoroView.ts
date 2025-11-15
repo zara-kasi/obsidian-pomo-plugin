@@ -68,12 +68,47 @@ export class PomodoroView extends ItemView {
 		// Header with session type
 		this.sessionLabelEl = this.containerEl.createDiv("pomodoro-session-label");
 
-		// Timer display
-		this.timerDisplayEl = this.containerEl.createDiv("pomodoro-timer-display");
+		// Circular timer container
+		const circularTimerContainer = this.containerEl.createDiv("pomodoro-circular-timer");
+		
+		// SVG for circular progress
+		const svg = circularTimerContainer.createSvg("svg", {
+			attr: {
+				width: "280",
+				height: "280",
+				viewBox: "0 0 280 280"
+			}
+		});
+		svg.addClass("pomodoro-circular-svg");
 
-		// Progress bar
-		const progressContainer = this.containerEl.createDiv("pomodoro-progress-container");
-		this.progressBarEl = progressContainer.createDiv("pomodoro-progress-bar");
+		// Background circle
+		svg.createSvg("circle", {
+			attr: {
+				cx: "140",
+				cy: "140",
+				r: "120",
+				fill: "none",
+				stroke: "var(--background-modifier-border)",
+				"stroke-width": "8"
+			}
+		});
+
+		// Progress circle
+		this.progressBarEl = svg.createSvg("circle", {
+			attr: {
+				cx: "140",
+				cy: "140",
+				r: "120",
+				fill: "none",
+				"stroke-width": "8",
+				"stroke-linecap": "round",
+				transform: "rotate(-90 140 140)"
+			}
+		}) as unknown as HTMLElement;
+		this.progressBarEl.addClass("pomodoro-progress-circle");
+
+		// Timer display (centered in circle)
+		this.timerDisplayEl = circularTimerContainer.createDiv("pomodoro-timer-display");
 
 		// Control buttons
 		this.controlsEl = this.containerEl.createDiv("pomodoro-controls");
