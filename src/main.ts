@@ -35,7 +35,26 @@ export default class PomodoroPlugin extends Plugin {
 					leaf.setViewState({
 						type: VIEW_TYPE_POMODORO,
 						active: false, // Don't activate/focus it
+					}).then(() => {
+						// If auto-start is enabled, start the timer (but don't open the view)
+						if (this.settings.autoStartOnLoad) {
+							const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
+							if (leaves.length > 0) {
+								const view = leaves[0].view;
+								if (view instanceof PomodoroView) {
+									view.getTimer().start();
+								}
+							}
+						}
 					});
+				}
+			} else {
+				// View already exists, just auto-start if needed
+				if (this.settings.autoStartOnLoad) {
+					const view = existing[0].view;
+					if (view instanceof PomodoroView) {
+						view.getTimer().start();
+					}
 				}
 			}
 		});
@@ -72,14 +91,6 @@ export default class PomodoroPlugin extends Plugin {
 
 		if (leaf) {
 			workspace.revealLeaf(leaf);
-			
-			// If auto-start is enabled, start the timer when view is opened
-			if (this.settings.autoStartOnLoad) {
-				const view = leaf.view;
-				if (view instanceof PomodoroView) {
-					view.getTimer().start();
-				}
-			}
 		}
 	}
 }
