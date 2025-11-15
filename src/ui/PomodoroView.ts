@@ -1,8 +1,8 @@
-import { ItemView, WorkspaceLeaf, Notice } from "obsidian";
+import { ItemView, WorkspaceLeaf, Notice, setIcon } from "obsidian";
 import PomodoroPlugin from "../main";
 import { PomodoroTimer } from "../utils/timer";
 import { TimerState, SessionType, TimerData } from "../types";
-import { formatTime, SESSION_LABELS, SESSION_EMOJIS } from "../utils/constants";
+import { formatTime, SESSION_LABELS } from "../utils/constants";
 
 export const VIEW_TYPE_POMODORO = "pomodoro-timer-view";
 
@@ -139,51 +139,33 @@ export class PomodoroView extends ItemView {
 			attr: { "aria-label": label }
 		});
 		
-		// Add icon (using simple text for compatibility)
-		const iconMap: Record<string, string> = {
-			"play": "▶",
-			"pause": "⏸",
-			"rotate-ccw": "↻",
-			"skip-forward": "⏭"
-		};
-		
-		button.textContent = iconMap[icon] || label;
+		// Use Obsidian's setIcon to add Lucide icons
+		setIcon(button, icon);
 		button.addEventListener("click", onClick);
 	}
 
 	private updateUI(data: TimerData): void {
-		// Update session label
-		const emoji = SESSION_EMOJIS[data.sessionType];
+		// Update session label (no emojis)
 		const label = SESSION_LABELS[data.sessionType];
-		this.sessionLabelEl.textContent = `${emoji} ${label}`;
+		this.sessionLabelEl.textContent = label;
 
 		// Update timer display
 		this.timerDisplayEl.textContent = formatTime(data.timeRemaining);
 
-		// Update circular progress
-		const progress = ((data.totalTime - data.timeRemaining) / data.totalTime);
+		// Update circular progress - FIXED: arc shrinks as time decreases
+		const progress = data.timeRemaining / data.totalTime; // Remaining ratio
 		const radius = 120;
 		const circumference = 2 * Math.PI * radius;
-		const offset = circumference * (1 - progress);
+		const offset = circumference * (1 - progress); // Arc shrinks as progress decreases
 		
 		this.progressCircleEl.style.strokeDasharray = `${circumference}`;
 		this.progressCircleEl.style.strokeDashoffset = `${offset}`;
 
-		// Update progress color based on session type
-		this.progressCircleEl.className.baseVal = "pomodoro-progress-circle";
-		if (data.sessionType === SessionType.WORK) {
-			this.progressCircleEl.classList.add("work");
-		} else if (data.sessionType === SessionType.SHORT_BREAK) {
-			this.progressCircleEl.classList.add("short-break");
-		} else {
-			this.progressCircleEl.classList.add("long-break");
-		}
-
 		// Update controls
 		this.createControls();
 
-		// Update stats - RESTORE COMPLETED SESSION COUNTER
-		this.statsEl.textContent = `Completed: ${data.completedSessions} 🍅`;
+		// Update stats - no emojis
+		this.statsEl.textContent = `Completed sessions: ${data.completedSessions}`;
 	}
 
 	getTimer(): PomodoroTimer {
