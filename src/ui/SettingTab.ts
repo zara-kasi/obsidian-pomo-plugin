@@ -86,6 +86,19 @@ export class PomodoroSettingTab extends PluginSettingTab {
 
 		containerEl.createEl("h3", { text: "Automation" });
 
+		// Auto-start on plugin load
+		new Setting(containerEl)
+			.setName("Auto-start timer on load")
+			.setDesc("Automatically start the timer when the plugin loads or Obsidian starts")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.autoStartOnLoad)
+					.onChange(async (value) => {
+						this.plugin.settings.autoStartOnLoad = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
 		// Auto-start breaks
 		new Setting(containerEl)
 			.setName("Auto-start breaks")
@@ -136,6 +149,19 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.playSound)
 					.onChange(async (value) => {
 						this.plugin.settings.playSound = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+		// Play vibration
+		new Setting(containerEl)
+			.setName("Play vibration")
+			.setDesc("Vibrate when sessions complete (if supported by device)")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.playVibration)
+					.onChange(async (value) => {
+						this.plugin.settings.playVibration = value;
 						await this.plugin.saveSettings();
 					})
 			);
