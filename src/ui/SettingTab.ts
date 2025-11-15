@@ -165,98 +165,47 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		// ==================== CUSTOMIZATION ====================
 		containerEl.createEl("h2", { text: "Customization" });
 
-		// --- Progress Bar Colors ---
+  	// --- Progress Bar Colors ---
 		containerEl.createEl("h3", { text: "Progress bar colors" });
 
-		new Setting(containerEl)
-			.setName("Work session color")
-			.setDesc("Color for the progress bar during work sessions (leave empty for Obsidian accent color)")
-			.addText((text) => {
-				text
-					.setPlaceholder("#e74c3c or leave empty")
-					.setValue(this.plugin.settings.workColor)
-					.onChange(async (value) => {
-						this.plugin.settings.workColor = value.trim();
-						await this.plugin.saveSettings();
-					});
-				text.inputEl.setAttribute("type", "text");
-			})
-			.addExtraButton((button) => {
-				button
-					.setIcon("palette")
-					.setTooltip("Pick color")
-					.onClick(() => {
-						const input = document.createElement("input");
-						input.type = "color";
-						input.value = this.plugin.settings.workColor || "#e74c3c";
-						input.addEventListener("change", async () => {
-							this.plugin.settings.workColor = input.value;
-							await this.plugin.saveSettings();
-							this.display();
-						});
-						input.click();
-					});
-			});
+		// Work session color
+		this.createColorPicker(
+			containerEl,
+			"Work session color",
+			"Color for the progress bar during work sessions",
+			this.plugin.settings.workColor,
+			"var(--interactive-accent)",
+			async (value) => {
+				this.plugin.settings.workColor = value;
+				await this.plugin.saveSettings();
+			}
+		);
 
-		new Setting(containerEl)
-			.setName("Short break color")
-			.setDesc("Color for the progress bar during short breaks (leave empty for Obsidian accent color)")
-			.addText((text) => {
-				text
-					.setPlaceholder("#3498db or leave empty")
-					.setValue(this.plugin.settings.shortBreakColor)
-					.onChange(async (value) => {
-						this.plugin.settings.shortBreakColor = value.trim();
-						await this.plugin.saveSettings();
-					});
-				text.inputEl.setAttribute("type", "text");
-			})
-			.addExtraButton((button) => {
-				button
-					.setIcon("palette")
-					.setTooltip("Pick color")
-					.onClick(() => {
-						const input = document.createElement("input");
-						input.type = "color";
-						input.value = this.plugin.settings.shortBreakColor || "#3498db";
-						input.addEventListener("change", async () => {
-							this.plugin.settings.shortBreakColor = input.value;
-							await this.plugin.saveSettings();
-							this.display();
-						});
-						input.click();
-					});
-			});
+		// Short break color
+		this.createColorPicker(
+			containerEl,
+			"Short break color",
+			"Color for the progress bar during short breaks",
+			this.plugin.settings.shortBreakColor,
+			"var(--interactive-accent)",
+			async (value) => {
+				this.plugin.settings.shortBreakColor = value;
+				await this.plugin.saveSettings();
+			}
+		);
 
-		new Setting(containerEl)
-			.setName("Long break color")
-			.setDesc("Color for the progress bar during long breaks (leave empty for Obsidian accent color)")
-			.addText((text) => {
-				text
-					.setPlaceholder("#2ecc71 or leave empty")
-					.setValue(this.plugin.settings.longBreakColor)
-					.onChange(async (value) => {
-						this.plugin.settings.longBreakColor = value.trim();
-						await this.plugin.saveSettings();
-					});
-				text.inputEl.setAttribute("type", "text");
-			})
-			.addExtraButton((button) => {
-				button
-					.setIcon("palette")
-					.setTooltip("Pick color")
-					.onClick(() => {
-						const input = document.createElement("input");
-						input.type = "color";
-						input.value = this.plugin.settings.longBreakColor || "#2ecc71";
-						input.addEventListener("change", async () => {
-							this.plugin.settings.longBreakColor = input.value;
-							await this.plugin.saveSettings();
-							this.display();
-						});
-						input.click();
-					});
-			});
+		// Long break color
+		this.createColorPicker(
+			containerEl,
+			"Long break color",
+			"Color for the progress bar during long breaks",
+			this.plugin.settings.longBreakColor,
+			"var(--interactive-accent)",
+			async (value) => {
+				this.plugin.settings.longBreakColor = value;
+				await this.plugin.saveSettings();
+			}
+		);
 
 		// --- Custom Notification Messages ---
 		containerEl.createEl("h3", { text: "Custom notification messages" });
@@ -344,5 +293,80 @@ export class PomodoroSettingTab extends PluginSettingTab {
 				text.inputEl.rows = 2;
 				text.inputEl.cols = 40;
 			});
+	}
+	
+	private createColorPicker(
+		containerEl: HTMLElement,
+		name: string,
+		desc: string,
+		currentValue: string,
+		defaultValue: string,
+		onChange: (value: string) => Promise<void>
+	): void {
+		const setting = new Setting(containerEl)
+			.setName(name)
+			.setDesc(desc);
+
+		// Create color preview swatch
+		const colorPreview = setting.controlEl.createDiv("color-picker-swatch");
+		colorPreview.style.width = "40px";
+		colorPreview.style.height = "30px";
+		colorPreview.style.borderRadius = "8px";
+		colorPreview.style.border = "2px solid var(--background-modifier-border)";
+		colorPreview.style.cursor = "pointer";
+		colorPreview.style.marginRight = "8px";
+		
+		// Set initial color
+		const displayColor = currentValue || defaultValue;
+		colorPreview.style.backgroundColor = displayColor;
+
+		// Add click handler to open native color picker
+		colorPreview.addEventListener("click", () => {
+			const input = document.createElement("input");
+			input.type = "color";
+			input.value = this.rgbToHex(currentValue) || "#000000";
+			
+			input.addEventListener("change", async () => {
+				const newColor = input.value;
+				colorPreview.style.backgroundColor = newColor;
+				await onChange(newColor);
+			});
+			
+			input.click();
+		});
+
+		// Add reset button
+		setting.addExtraButton((button) => {
+			button
+				.setIcon("reset")
+				.setTooltip("Reset to default")
+				.onClick(async () => {
+					colorPreview.style.backgroundColor = defaultValue;
+					await onChange("");
+				});
+		});
+	}
+
+	// Helper function to convert rgb/rgba to hex
+	private rgbToHex(color: string): string {
+		if (!color || color.startsWith("#")) {
+			return color;
+		}
+		
+		// Handle var(--...) CSS variables - return a default
+		if (color.startsWith("var(")) {
+			return "#000000";
+		}
+
+		// Parse rgb/rgba
+		const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+		if (match) {
+			const r = parseInt(match[1]);
+			const g = parseInt(match[2]);
+			const b = parseInt(match[3]);
+			return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+		}
+
+		return color;
 	}
 }
