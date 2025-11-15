@@ -5,8 +5,10 @@ export interface PomodoroSettings {
 	sessionsUntilLongBreak: number;
 	autoStartBreaks: boolean;
 	autoStartWork: boolean;
+	autoStartOnLoad: boolean; // NEW: Auto-start timer when plugin loads
 	showNotifications: boolean;
 	playSound: boolean;
+	playVibration: boolean; // NEW: Vibrate on session completion
 	workColor: string;
 	shortBreakColor: string;
 	longBreakColor: string;
@@ -19,8 +21,10 @@ export const DEFAULT_SETTINGS: PomodoroSettings = {
 	sessionsUntilLongBreak: 4,
 	autoStartBreaks: false,
 	autoStartWork: false,
+	autoStartOnLoad: false,
 	showNotifications: true,
 	playSound: true,
+	playVibration: false,
 	workColor: "",
 	shortBreakColor: "",
 	longBreakColor: "",
