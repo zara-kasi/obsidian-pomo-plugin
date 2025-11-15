@@ -22,22 +22,6 @@ export default class PomodoroPlugin extends Plugin {
 
 		// Add settings tab
 		this.addSettingTab(new PomodoroSettingTab(this.app, this));
-
-		// Automatically activate view in sidebar on plugin load
-		this.app.workspace.onLayoutReady(() => {
-			this.activateView().then(() => {
-				// If auto-start is enabled, start the timer
-				if (this.settings.autoStartOnLoad) {
-					const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
-					if (leaves.length > 0) {
-						const view = leaves[0].view;
-						if (view instanceof PomodoroView) {
-							view.getTimer().start();
-						}
-					}
-				}
-			});
-		});
 	}
 
 	async onunload() {
@@ -71,6 +55,14 @@ export default class PomodoroPlugin extends Plugin {
 
 		if (leaf) {
 			workspace.revealLeaf(leaf);
+			
+			// If auto-start is enabled, start the timer
+			if (this.settings.autoStartOnLoad) {
+				const view = leaf.view;
+				if (view instanceof PomodoroView) {
+					view.getTimer().start();
+				}
+			}
 		}
 	}
 }
