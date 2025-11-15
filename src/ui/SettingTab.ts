@@ -296,57 +296,58 @@ export class PomodoroSettingTab extends PluginSettingTab {
 	}
 	
 	private createColorPicker(
-		containerEl: HTMLElement,
-		name: string,
-		desc: string,
-		currentValue: string,
-		defaultValue: string,
-		onChange: (value: string) => Promise<void>
-	): void {
-		const setting = new Setting(containerEl)
-			.setName(name)
-			.setDesc(desc);
+	containerEl: HTMLElement,
+	name: string,
+	desc: string,
+	currentValue: string,
+	defaultValue: string,
+	onChange: (value: string) => Promise<void>
+): void {
+	const setting = new Setting(containerEl)
+		.setName(name)
+		.setDesc(desc);
 
-		// Create color preview swatch
-		const colorPreview = setting.controlEl.createDiv("color-picker-swatch");
-		colorPreview.style.width = "40px";
-		colorPreview.style.height = "30px";
-		colorPreview.style.borderRadius = "8px";
-		colorPreview.style.border = "2px solid var(--background-modifier-border)";
-		colorPreview.style.cursor = "pointer";
-		colorPreview.style.marginRight = "8px";
-		
-		// Set initial color
-		const displayColor = currentValue || defaultValue;
-		colorPreview.style.backgroundColor = displayColor;
-		
-				// Add reset button
-		setting.addExtraButton((button) => {
-			button
-				.setIcon("reset")
-				.setTooltip("Reset to default")
-				.onClick(async () => {
-					colorPreview.style.backgroundColor = defaultValue;
-					await onChange("");
-				});
-		});
+	// Store reference to color preview
+	let colorPreview: HTMLDivElement;
 
-		// Add click handler to open native color picker
-		colorPreview.addEventListener("click", () => {
-			const input = document.createElement("input");
-			input.type = "color";
-			input.value = this.rgbToHex(currentValue) || "#000000";
-			
-			input.addEventListener("change", async () => {
-				const newColor = input.value;
-				colorPreview.style.backgroundColor = newColor;
-				await onChange(newColor);
+	// Add reset button first (so it appears on the left)
+	setting.addExtraButton((button) => {
+		button
+			.setIcon("reset")
+			.setTooltip("Reset to default")
+			.onClick(async () => {
+				colorPreview.style.backgroundColor = defaultValue;
+				await onChange("");
 			});
-			
-			input.click();
-		});
+	});
 
-	}
+	// Create color preview swatch after reset button (so it appears on the right)
+	colorPreview = setting.controlEl.createDiv("color-picker-swatch");
+	colorPreview.style.width = "40px";
+	colorPreview.style.height = "30px";
+	colorPreview.style.borderRadius = "8px";
+	colorPreview.style.border = "2px solid var(--background-modifier-border)";
+	colorPreview.style.cursor = "pointer";
+	
+	// Set initial color
+	const displayColor = currentValue || defaultValue;
+	colorPreview.style.backgroundColor = displayColor;
+
+	// Add click handler to open native color picker
+	colorPreview.addEventListener("click", () => {
+		const input = document.createElement("input");
+		input.type = "color";
+		input.value = this.rgbToHex(currentValue) || "#000000";
+		
+		input.addEventListener("change", async () => {
+			const newColor = input.value;
+			colorPreview.style.backgroundColor = newColor;
+			await onChange(newColor);
+		});
+		
+		input.click();
+	});
+}
 
 	// Helper function to convert rgb/rgba to hex
 	private rgbToHex(color: string): string {
