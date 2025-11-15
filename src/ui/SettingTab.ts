@@ -319,6 +319,17 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		// Set initial color
 		const displayColor = currentValue || defaultValue;
 		colorPreview.style.backgroundColor = displayColor;
+		
+				// Add reset button
+		setting.addExtraButton((button) => {
+			button
+				.setIcon("reset")
+				.setTooltip("Reset to default")
+				.onClick(async () => {
+					colorPreview.style.backgroundColor = defaultValue;
+					await onChange("");
+				});
+		});
 
 		// Add click handler to open native color picker
 		colorPreview.addEventListener("click", () => {
@@ -335,16 +346,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 			input.click();
 		});
 
-		// Add reset button
-		setting.addExtraButton((button) => {
-			button
-				.setIcon("reset")
-				.setTooltip("Reset to default")
-				.onClick(async () => {
-					colorPreview.style.backgroundColor = defaultValue;
-					await onChange("");
-				});
-		});
 	}
 
 	// Helper function to convert rgb/rgba to hex
