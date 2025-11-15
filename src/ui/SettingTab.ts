@@ -303,9 +303,15 @@ export class PomodoroSettingTab extends PluginSettingTab {
 	defaultValue: string,
 	onChange: (value: string) => Promise<void>
 ): void {
-	const setting = new Setting(containerEl)
-		.setName(name)
-		.setDesc(desc);
+	const setting = new Setting(containerEl);
+	
+	// Set the info (name and description)
+	setting.setName(name);
+	setting.setDesc(desc);
+	
+	// Ensure the setting maintains proper layout
+	setting.settingEl.style.display = "flex";
+	setting.settingEl.style.alignItems = "flex-start";
 
 	// Store reference to color preview
 	let colorPreview: HTMLDivElement;
@@ -328,7 +334,7 @@ export class PomodoroSettingTab extends PluginSettingTab {
 	colorPreview.style.borderRadius = "8px";
 	colorPreview.style.border = "2px solid var(--background-modifier-border)";
 	colorPreview.style.cursor = "pointer";
-	colorPreview.style.flexShrink = "0"; // Prevent the color picker from shrinking
+	colorPreview.style.flexShrink = "0";
 	
 	// Set initial color
 	const displayColor = currentValue || defaultValue;
