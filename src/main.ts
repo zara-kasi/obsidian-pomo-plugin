@@ -16,10 +16,6 @@ export default class PomodoroPlugin extends Plugin {
 			(leaf) => new PomodoroView(leaf, this)
 		);
 
-		// Add ribbon icon to open Pomodoro view
-		this.addRibbonIcon("clock", "Pomodoro Timer", () => {
-			this.activateView();
-		});
 
 		// Register all commands
 		registerCommands(this);
@@ -27,20 +23,40 @@ export default class PomodoroPlugin extends Plugin {
 		// Add settings tab
 		this.addSettingTab(new PomodoroSettingTab(this.app, this));
 
-		// Automatically activate view in sidebar on plugin load
+		// Automatically add view to sidebar on plugin load (but don't focus it)
 		this.app.workspace.onLayoutReady(() => {
-			this.activateView().then(() => {
-				// If auto-start is enabled, start the timer
-				if (this.settings.autoStartOnLoad) {
-					const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
-					if (leaves.length > 0) {
-						const view = leaves[0].view;
-						if (view instanceof PomodoroView) {
-							view.getTimer().start();
+			// Check if the view already exists
+			const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
+			
+			// Only create the view if it doesn't exist
+			if (existing.length === 0) {
+				const leaf = this.app.workspace.getRightLeaf(false);
+				if (leaf) {
+					leaf.setViewState({
+						type: VIEW_TYPE_POMODORO,
+						active: false, // Don't activate/focus it
+					}).then(() => {
+						// If auto-start is enabled, start the timer (but don't open the view)
+						if (this.settings.autoStartOnLoad) {
+							const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
+							if (leaves.length > 0) {
+								const view = leaves[0].view;
+								if (view instanceof PomodoroView) {
+									view.getTimer().start();
+								}
+							}
 						}
+					});
+				}
+			} else {
+				// View already exists, just auto-start if needed
+				if (this.settings.autoStartOnLoad) {
+					const view = existing[0].view;
+					if (view instanceof PomodoroView) {
+						view.getTimer().start();
 					}
 				}
-			});
+			}
 		});
 	}
 

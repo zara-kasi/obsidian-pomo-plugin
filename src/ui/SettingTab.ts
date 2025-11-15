@@ -14,9 +14,12 @@ export class PomodoroSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl("h2", { text: "Pomodoro Timer Settings" });
+		// ==================== GENERAL SETTINGS ====================
+		containerEl.createEl("h2", { text: "General Settings" });
 
-		// Work duration
+		// --- Time Durations ---
+		containerEl.createEl("h3", { text: "Time durations" });
+
 		new Setting(containerEl)
 			.setName("Work duration")
 			.setDesc("Duration of work sessions in minutes")
@@ -33,7 +36,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Short break duration
 		new Setting(containerEl)
 			.setName("Short break duration")
 			.setDesc("Duration of short breaks in minutes")
@@ -50,7 +52,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Long break duration
 		new Setting(containerEl)
 			.setName("Long break duration")
 			.setDesc("Duration of long breaks in minutes")
@@ -67,7 +68,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Sessions until long break
 		new Setting(containerEl)
 			.setName("Sessions until long break")
 			.setDesc("Number of work sessions before a long break")
@@ -84,9 +84,9 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
+		// --- Automation ---
 		containerEl.createEl("h3", { text: "Automation" });
 
-		// Auto-start on plugin load
 		new Setting(containerEl)
 			.setName("Auto-start timer on load")
 			.setDesc("Automatically start the timer when the plugin loads or Obsidian starts")
@@ -99,7 +99,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Auto-start breaks
 		new Setting(containerEl)
 			.setName("Auto-start breaks")
 			.setDesc("Automatically start break timers after work sessions")
@@ -112,7 +111,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Auto-start work
 		new Setting(containerEl)
 			.setName("Auto-start work")
 			.setDesc("Automatically start work timers after breaks")
@@ -125,9 +123,9 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
+		// --- Notifications ---
 		containerEl.createEl("h3", { text: "Notifications" });
 
-		// Show notifications
 		new Setting(containerEl)
 			.setName("Show notifications")
 			.setDesc("Display notifications when sessions complete")
@@ -140,7 +138,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Play sound
 		new Setting(containerEl)
 			.setName("Play sound")
 			.setDesc("Play a sound when sessions complete")
@@ -153,7 +150,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Play vibration
 		new Setting(containerEl)
 			.setName("Play vibration")
 			.setDesc("Vibrate when sessions complete (if supported by device)")
@@ -166,9 +162,105 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
+		// ==================== CUSTOMIZATION ====================
+		containerEl.createEl("h2", { text: "Customization" });
+
+		// --- Progress Bar Colors ---
+		containerEl.createEl("h3", { text: "Progress bar colors" });
+
+		new Setting(containerEl)
+			.setName("Work session color")
+			.setDesc("Color for the progress bar during work sessions (leave empty for Obsidian accent color)")
+			.addText((text) => {
+				text
+					.setPlaceholder("#e74c3c or leave empty")
+					.setValue(this.plugin.settings.workColor)
+					.onChange(async (value) => {
+						this.plugin.settings.workColor = value.trim();
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.setAttribute("type", "text");
+			})
+			.addExtraButton((button) => {
+				button
+					.setIcon("palette")
+					.setTooltip("Pick color")
+					.onClick(() => {
+						const input = document.createElement("input");
+						input.type = "color";
+						input.value = this.plugin.settings.workColor || "#e74c3c";
+						input.addEventListener("change", async () => {
+							this.plugin.settings.workColor = input.value;
+							await this.plugin.saveSettings();
+							this.display();
+						});
+						input.click();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("Short break color")
+			.setDesc("Color for the progress bar during short breaks (leave empty for Obsidian accent color)")
+			.addText((text) => {
+				text
+					.setPlaceholder("#3498db or leave empty")
+					.setValue(this.plugin.settings.shortBreakColor)
+					.onChange(async (value) => {
+						this.plugin.settings.shortBreakColor = value.trim();
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.setAttribute("type", "text");
+			})
+			.addExtraButton((button) => {
+				button
+					.setIcon("palette")
+					.setTooltip("Pick color")
+					.onClick(() => {
+						const input = document.createElement("input");
+						input.type = "color";
+						input.value = this.plugin.settings.shortBreakColor || "#3498db";
+						input.addEventListener("change", async () => {
+							this.plugin.settings.shortBreakColor = input.value;
+							await this.plugin.saveSettings();
+							this.display();
+						});
+						input.click();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("Long break color")
+			.setDesc("Color for the progress bar during long breaks (leave empty for Obsidian accent color)")
+			.addText((text) => {
+				text
+					.setPlaceholder("#2ecc71 or leave empty")
+					.setValue(this.plugin.settings.longBreakColor)
+					.onChange(async (value) => {
+						this.plugin.settings.longBreakColor = value.trim();
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.setAttribute("type", "text");
+			})
+			.addExtraButton((button) => {
+				button
+					.setIcon("palette")
+					.setTooltip("Pick color")
+					.onClick(() => {
+						const input = document.createElement("input");
+						input.type = "color";
+						input.value = this.plugin.settings.longBreakColor || "#2ecc71";
+						input.addEventListener("change", async () => {
+							this.plugin.settings.longBreakColor = input.value;
+							await this.plugin.saveSettings();
+							this.display();
+						});
+						input.click();
+					});
+			});
+
+		// --- Custom Notification Messages ---
 		containerEl.createEl("h3", { text: "Custom notification messages" });
 
-		// Work session complete notification
 		new Setting(containerEl)
 			.setName("Work session complete title")
 			.setDesc("Title for the notification when a work session ends")
@@ -197,7 +289,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 				text.inputEl.cols = 40;
 			});
 
-		// Short break complete notification
 		new Setting(containerEl)
 			.setName("Short break complete title")
 			.setDesc("Title for the notification when a short break ends")
@@ -226,7 +317,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 				text.inputEl.cols = 40;
 			});
 
-		// Long break complete notification
 		new Setting(containerEl)
 			.setName("Long break complete title")
 			.setDesc("Title for the notification when a long break ends")
@@ -253,101 +343,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					});
 				text.inputEl.rows = 2;
 				text.inputEl.cols = 40;
-			});
-
-		containerEl.createEl("h3", { text: "Progress bar colors" });
-
-		// Work session color
-		new Setting(containerEl)
-			.setName("Work session color")
-			.setDesc("Color for the progress bar during work sessions (leave empty for Obsidian accent color)")
-			.addText((text) => {
-				text
-					.setPlaceholder("#e74c3c or leave empty")
-					.setValue(this.plugin.settings.workColor)
-					.onChange(async (value) => {
-						this.plugin.settings.workColor = value.trim();
-						await this.plugin.saveSettings();
-					});
-				text.inputEl.setAttribute("type", "text");
-			})
-			.addExtraButton((button) => {
-				button
-					.setIcon("palette")
-					.setTooltip("Pick color")
-					.onClick(() => {
-						const input = document.createElement("input");
-						input.type = "color";
-						input.value = this.plugin.settings.workColor || "#e74c3c";
-						input.addEventListener("change", async () => {
-							this.plugin.settings.workColor = input.value;
-							await this.plugin.saveSettings();
-							this.display(); // Refresh settings display
-						});
-						input.click();
-					});
-			});
-
-		// Short break color
-		new Setting(containerEl)
-			.setName("Short break color")
-			.setDesc("Color for the progress bar during short breaks (leave empty for Obsidian accent color)")
-			.addText((text) => {
-				text
-					.setPlaceholder("#3498db or leave empty")
-					.setValue(this.plugin.settings.shortBreakColor)
-					.onChange(async (value) => {
-						this.plugin.settings.shortBreakColor = value.trim();
-						await this.plugin.saveSettings();
-					});
-				text.inputEl.setAttribute("type", "text");
-			})
-			.addExtraButton((button) => {
-				button
-					.setIcon("palette")
-					.setTooltip("Pick color")
-					.onClick(() => {
-						const input = document.createElement("input");
-						input.type = "color";
-						input.value = this.plugin.settings.shortBreakColor || "#3498db";
-						input.addEventListener("change", async () => {
-							this.plugin.settings.shortBreakColor = input.value;
-							await this.plugin.saveSettings();
-							this.display(); // Refresh settings display
-						});
-						input.click();
-					});
-			});
-
-		// Long break color
-		new Setting(containerEl)
-			.setName("Long break color")
-			.setDesc("Color for the progress bar during long breaks (leave empty for Obsidian accent color)")
-			.addText((text) => {
-				text
-					.setPlaceholder("#2ecc71 or leave empty")
-					.setValue(this.plugin.settings.longBreakColor)
-					.onChange(async (value) => {
-						this.plugin.settings.longBreakColor = value.trim();
-						await this.plugin.saveSettings();
-					});
-				text.inputEl.setAttribute("type", "text");
-			})
-			.addExtraButton((button) => {
-				button
-					.setIcon("palette")
-					.setTooltip("Pick color")
-					.onClick(() => {
-						const input = document.createElement("input");
-						input.type = "color";
-						input.value = this.plugin.settings.longBreakColor || "#2ecc71";
-						input.addEventListener("change", async () => {
-							this.plugin.settings.longBreakColor = input.value;
-							await this.plugin.saveSettings();
-							this.display(); // Refresh settings display
-						});
-						input.click();
-					});
 			});
 	}
 }

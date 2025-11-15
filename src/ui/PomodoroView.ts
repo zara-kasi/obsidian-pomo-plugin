@@ -25,7 +25,7 @@ export class PomodoroView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return "Pomodoro Timer";
+		return "Pomo";
 	}
 
 	getIcon(): string {
