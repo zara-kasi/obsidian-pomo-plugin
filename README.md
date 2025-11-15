@@ -1,136 +1,35 @@
-# Pomodoro Timer for Obsidian
+# Pomo Obsidian Plugin
 
-A simple and elegant Pomodoro timer plugin for Obsidian that helps you stay focused and productive using the Pomodoro Technique.
+A Pomodoro timer widget for Obsidian that lives in your sidebar.
+
+## What is Pomo?
+
+Pomo adds a clean, minimal Pomodoro clock widget to your Obsidian sidebar. It helps you stay focused and productive by breaking your work into manageable intervals.
 
 ## Features
 
-- 🍅 **Classic Pomodoro Timer**: Work sessions, short breaks, and long breaks
-- 📊 **Session Tracking**: Keep track of completed Pomodoro sessions
-- ⚙️ **Customizable Durations**: Configure work and break durations to your preference
-- 🔔 **Notifications**: Get notified when sessions complete
-- 🎯 **Sidebar Widget**: Clean, minimal interface in your Obsidian sidebar
-- ⌨️ **Keyboard Commands**: Control the timer with commands
-- 🌙 **Theme Support**: Works with both light and dark themes
-- 📱 **Mobile Compatible**: Works on desktop and mobile devices
+- **Auto-start on Load** — Open Obsidian, and the timer starts automatically. No need to click anything—just open your vault and you're already working.
 
-## Installation
+- **Automatic Session Switching** — When your work session ends, Pomo switches you to a break. When the break's over, it's back to work. You don't have to think about it.
 
-### From Obsidian Community Plugins (Recommended)
+- **Customize Progress Bar Colors** — Choose different colors for work sessions, short breaks, and long breaks. Make the timer match your theme or just pick colors you like.
 
-1. Open **Settings** → **Community plugins**
-2. Select **Browse** and search for "Pomodoro Timer"
-3. Select **Install**, then **Enable**
+- **Customize Notification Messages** — Write your own notification text for each session type. Change "Work session complete" to whatever actually motivates you or makes you smile.
 
-### Manual Installation
+- **Flexible Session Durations** — Adjust how long your work sessions and breaks last. The default is 25/5/15 minutes, but you can change it to whatever works for you.
 
-1. Download the latest release from GitHub
-2. Extract the files to your vault: `<vault>/.obsidian/plugins/pomodoro-timer/`
-3. Reload Obsidian
-4. Enable the plugin in **Settings** → **Community plugins**
+- **Sound Alerts** — A simple beep plays when each session ends, so you know it's time to switch without having to watch the timer.
 
-## Usage
+- **Vibration Support** — Your device vibrates when a session completes (tested on Android). Useful when you're wearing headphones or have notifications muted.
 
-### Opening the Timer
+## How it Works
 
-- Click the clock icon in the left ribbon
-- Use the command palette: `Pomodoro: Open Pomodoro timer`
+Start a 25-minute work session, take a 5-minute break, repeat. After 4 work sessions, take a longer 15-minute break. Everything happens automatically — just focus on your work.
 
-### Timer Controls
+---
 
-- **Start**: Begin the current session
-- **Pause**: Pause the running timer
-- **Reset**: Reset the current session to its full duration
-- **Skip**: Skip to the next session (work → break → work)
-
-### Available Commands
-
-Access these via the command palette (Ctrl/Cmd + P):
-
-- `Pomodoro: Open Pomodoro timer`
-- `Pomodoro: Start timer`
-- `Pomodoro: Pause timer`
-- `Pomodoro: Reset timer`
-- `Pomodoro: Skip to next session`
-
-## Settings
-
-Configure the plugin in **Settings** → **Pomodoro Timer**:
-
-### Timer Durations
-
-- **Work duration**: Length of work sessions (default: 25 minutes)
-- **Short break duration**: Length of short breaks (default: 5 minutes)
-- **Long break duration**: Length of long breaks (default: 15 minutes)
-- **Sessions until long break**: Number of work sessions before a long break (default: 4)
-
-### Automation
-
-- **Auto-start breaks**: Automatically start break timers after work sessions
-- **Auto-start work**: Automatically start work timers after breaks
-
-### Notifications
-
-- **Show notifications**: Display notifications when sessions complete
-- **Play sound**: Play a sound when sessions complete
-
-## The Pomodoro Technique
-
-The Pomodoro Technique is a time management method that uses a timer to break work into intervals:
-
-1. Work for 25 minutes (1 Pomodoro)
-2. Take a 5-minute short break
-3. Repeat steps 1-2
-4. After 4 Pomodoros, take a 15-minute long break
-
-This plugin helps you follow this technique while working in Obsidian.
-
-## Development
-
-### Project Structure
-
-```
-src/
-  main.ts              # Plugin entry point
-  settings.ts          # Settings interface and defaults
-  types.ts             # TypeScript type definitions
-  commands/
-    index.ts           # Command registration
-  ui/
-    PomodoroView.ts    # Main timer view
-    SettingTab.ts      # Settings UI
-  utils/
-    timer.ts           # Timer logic
-    constants.ts       # Constants and helpers
-```
-
-### Building
-
-```bash
-npm install
-npm run dev    # Development mode with watch
-npm run build  # Production build
-```
-
-### Testing
-
-Copy the built files to your vault's plugins folder:
-
-```bash
-cp main.js manifest.json styles.css <vault>/.obsidian/plugins/pomodoro-timer/
-```
-
-## Support
-
-If you find this plugin helpful, consider:
-
-- ⭐ Starring the repository
-- 🐛 Reporting bugs or suggesting features
-- 💬 Sharing your experience with others
+**Acknowledgments**: This plugin is greatly inspired by Liam Cain's Calendar plugin. I tried to create a similar sidebar widget experience for the Pomodoro timer.
 
 ## License
 
-MIT License - See LICENSE file for details
-
-## Credits
-
-Inspired by the Pomodoro Technique developed by Francesco Cirillo and the clean design of Liam Cain's Calendar plugin.
+MIT
