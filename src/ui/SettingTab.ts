@@ -172,7 +172,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		this.createColorPicker(
 			containerEl,
 			"Work session color",
-			"Color for the progress bar during work sessions",
 			this.plugin.settings.workColor,
 			"var(--interactive-accent)",
 			async (value) => {
@@ -185,7 +184,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		this.createColorPicker(
 			containerEl,
 			"Short break color",
-			"Color for the progress bar during short breaks",
 			this.plugin.settings.shortBreakColor,
 			"var(--interactive-accent)",
 			async (value) => {
@@ -198,7 +196,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		this.createColorPicker(
 			containerEl,
 			"Long break color",
-			"Color for the progress bar during long breaks",
 			this.plugin.settings.longBreakColor,
 			"var(--interactive-accent)",
 			async (value) => {
