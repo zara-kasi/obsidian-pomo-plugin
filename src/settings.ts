@@ -7,6 +7,9 @@ export interface PomodoroSettings {
 	autoStartWork: boolean;
 	showNotifications: boolean;
 	playSound: boolean;
+	workColor: string;
+	shortBreakColor: string;
+	longBreakColor: string;
 }
 
 export const DEFAULT_SETTINGS: PomodoroSettings = {
@@ -18,4 +21,7 @@ export const DEFAULT_SETTINGS: PomodoroSettings = {
 	autoStartWork: false,
 	showNotifications: true,
 	playSound: true,
+	workColor: "",
+	shortBreakColor: "",
+	longBreakColor: "",
 };
