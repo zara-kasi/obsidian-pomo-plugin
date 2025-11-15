@@ -31,18 +31,7 @@
 
 .pomodoro-progress-circle {
 	transition: stroke-dashoffset 1s linear;
-}
-
-.pomodoro-progress-circle.work {
-	stroke: #e74c3c;
-}
-
-.pomodoro-progress-circle.short-break {
-	stroke: #3498db;
-}
-
-.pomodoro-progress-circle.long-break {
-	stroke: #2ecc71;
+	stroke: var(--interactive-accent);
 }
 
 .pomodoro-timer-display {
@@ -64,7 +53,7 @@
 
 .pomodoro-button {
 	padding: 10px 20px;
-	font-size: 1.5em;
+	font-size: 1em;
 	border: 2px solid var(--background-modifier-border);
 	background-color: var(--background-primary);
 	color: var(--text-normal);
@@ -72,16 +61,24 @@
 	cursor: pointer;
 	transition: all 0.2s ease;
 	min-width: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .pomodoro-button:hover {
 	background-color: var(--background-modifier-hover);
-	border-color: var(--text-accent);
+	border-color: var(--interactive-accent);
 	transform: translateY(-2px);
 }
 
 .pomodoro-button:active {
 	transform: translateY(0);
+}
+
+.pomodoro-button svg {
+	width: 20px;
+	height: 20px;
 }
 
 .pomodoro-stats {
@@ -118,7 +115,6 @@
 	
 	.pomodoro-button {
 		padding: 8px 16px;
-		font-size: 1.2em;
 		min-width: 40px;
 	}
 }
