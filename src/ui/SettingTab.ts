@@ -303,15 +303,22 @@ export class PomodoroSettingTab extends PluginSettingTab {
 	defaultValue: string,
 	onChange: (value: string) => Promise<void>
 ): void {
-	const setting = new Setting(containerEl);
-	
-	// Set the info (name and description)
-	setting.setName(name);
-	setting.setDesc(desc);
-	
-	// Ensure the setting maintains proper layout
-	setting.settingEl.style.display = "flex";
-	setting.settingEl.style.alignItems = "flex-start";
+	const setting = new Setting(containerEl)
+		.setName(name)
+		.setDesc(desc);
+
+	// Constrain the info section width so it doesn't invade the control area
+	const infoEl = setting.settingEl.querySelector('.setting-item-info') as HTMLElement;
+	if (infoEl) {
+		infoEl.style.maxWidth = "60%"; // Or whatever percentage works best
+		infoEl.style.flexShrink = "1";
+	}
+
+	// Ensure control area stays on the right
+	setting.controlEl.style.flexShrink = "0";
+	setting.controlEl.style.display = "flex";
+	setting.controlEl.style.alignItems = "center";
+	setting.controlEl.style.gap = "8px";
 
 	// Store reference to color preview
 	let colorPreview: HTMLDivElement;
