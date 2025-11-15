@@ -307,20 +307,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		.setName(name)
 		.setDesc(desc);
 
-	// Constrain the info section but allow proper text wrapping
-	const infoEl = setting.settingEl.querySelector('.setting-item-info') as HTMLElement;
-	if (infoEl) {
-		infoEl.style.flex = "1 1 auto";
-		infoEl.style.minWidth = "0";
-		infoEl.style.paddingRight = "12px";
-	}
-
-	// Ensure control area stays on the right and doesn't wrap
-	setting.controlEl.style.flex = "0 0 auto";
-	setting.controlEl.style.display = "flex";
-	setting.controlEl.style.alignItems = "center";
-	setting.controlEl.style.gap = "8px";
-
 	// Store reference to color preview
 	let colorPreview: HTMLDivElement;
 
@@ -342,7 +328,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 	colorPreview.style.borderRadius = "8px";
 	colorPreview.style.border = "2px solid var(--background-modifier-border)";
 	colorPreview.style.cursor = "pointer";
-	colorPreview.style.flexShrink = "0";
 	
 	// Set initial color
 	const displayColor = currentValue || defaultValue;
