@@ -307,22 +307,31 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		.setName(name)
 		.setDesc(desc);
 
+	// Create a container for our custom controls
+	const controlContainer = setting.controlEl.createDiv();
+	controlContainer.style.display = "flex";
+	controlContainer.style.alignItems = "center";
+	controlContainer.style.gap = "8px";
+
 	// Store reference to color preview
 	let colorPreview: HTMLDivElement;
 
-	// Add reset button first (so it appears on the left)
-	setting.addExtraButton((button) => {
-		button
-			.setIcon("reset")
-			.setTooltip("Reset to default")
-			.onClick(async () => {
-				colorPreview.style.backgroundColor = defaultValue;
-				await onChange("");
-			});
+	// Add reset button first
+	const resetButton = controlContainer.createEl("button", {
+		cls: "clickable-icon",
+		attr: {
+			"aria-label": "Reset to default"
+		}
+	});
+	resetButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>`;
+	
+	resetButton.addEventListener("click", async () => {
+		colorPreview.style.backgroundColor = defaultValue;
+		await onChange("");
 	});
 
-	// Create color preview swatch after reset button (so it appears on the right)
-	colorPreview = setting.controlEl.createDiv("color-picker-swatch");
+	// Create color preview swatch
+	colorPreview = controlContainer.createDiv("color-picker-swatch");
 	colorPreview.style.width = "40px";
 	colorPreview.style.height = "30px";
 	colorPreview.style.borderRadius = "8px";
