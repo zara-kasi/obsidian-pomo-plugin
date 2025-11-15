@@ -10,7 +10,7 @@ export class PomodoroView extends ItemView {
 	private timer: PomodoroTimer;
 	private timerDisplayEl: HTMLElement;
 	private sessionLabelEl: HTMLElement;
-	private progressBarEl: HTMLElement;
+	private progressCircleEl: SVGCircleElement;
 	private controlsEl: HTMLElement;
 	private statsEl: HTMLElement;
 
@@ -94,7 +94,7 @@ export class PomodoroView extends ItemView {
 		});
 
 		// Progress circle
-		this.progressBarEl = svg.createSvg("circle", {
+		this.progressCircleEl = svg.createSvg("circle", {
 			attr: {
 				cx: "140",
 				cy: "140",
@@ -104,8 +104,8 @@ export class PomodoroView extends ItemView {
 				"stroke-linecap": "round",
 				transform: "rotate(-90 140 140)"
 			}
-		}) as unknown as HTMLElement;
-		this.progressBarEl.addClass("pomodoro-progress-circle");
+		}) as SVGCircleElement;
+		this.progressCircleEl.addClass("pomodoro-progress-circle");
 
 		// Timer display (centered in circle)
 		this.timerDisplayEl = circularTimerContainer.createDiv("pomodoro-timer-display");
@@ -162,26 +162,27 @@ export class PomodoroView extends ItemView {
 
 		// Update circular progress
 		const progress = ((data.totalTime - data.timeRemaining) / data.totalTime);
-		const circumference = 2 * Math.PI * 120; // radius = 120
+		const radius = 120;
+		const circumference = 2 * Math.PI * radius;
 		const offset = circumference * (1 - progress);
 		
-		this.progressBarEl.style.strokeDasharray = `${circumference}`;
-		this.progressBarEl.style.strokeDashoffset = `${offset}`;
+		this.progressCircleEl.style.strokeDasharray = `${circumference}`;
+		this.progressCircleEl.style.strokeDashoffset = `${offset}`;
 
 		// Update progress color based on session type
-		this.progressBarEl.className = "pomodoro-progress-circle";
+		this.progressCircleEl.className.baseVal = "pomodoro-progress-circle";
 		if (data.sessionType === SessionType.WORK) {
-			this.progressBarEl.addClass("work");
+			this.progressCircleEl.classList.add("work");
 		} else if (data.sessionType === SessionType.SHORT_BREAK) {
-			this.progressBarEl.addClass("short-break");
+			this.progressCircleEl.classList.add("short-break");
 		} else {
-			this.progressBarEl.addClass("long-break");
+			this.progressCircleEl.classList.add("long-break");
 		}
 
 		// Update controls
 		this.createControls();
 
-		// Update stats
+		// Update stats - RESTORE COMPLETED SESSION COUNTER
 		this.statsEl.textContent = `Completed: ${data.completedSessions} 🍅`;
 	}
 
