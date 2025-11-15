@@ -31,7 +31,6 @@
 
 .pomodoro-progress-circle {
 	transition: stroke-dashoffset 1s linear;
-	stroke: var(--interactive-accent);
 }
 
 .pomodoro-timer-display {
