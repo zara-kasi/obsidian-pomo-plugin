@@ -139,5 +139,100 @@ export class PomodoroSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					})
 			);
+
+		containerEl.createEl("h3", { text: "Progress bar colors" });
+
+		// Work session color
+		new Setting(containerEl)
+			.setName("Work session color")
+			.setDesc("Color for the progress bar during work sessions (leave empty for Obsidian accent color)")
+			.addText((text) => {
+				text
+					.setPlaceholder("#e74c3c or leave empty")
+					.setValue(this.plugin.settings.workColor)
+					.onChange(async (value) => {
+						this.plugin.settings.workColor = value.trim();
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.setAttribute("type", "text");
+			})
+			.addExtraButton((button) => {
+				button
+					.setIcon("palette")
+					.setTooltip("Pick color")
+					.onClick(() => {
+						const input = document.createElement("input");
+						input.type = "color";
+						input.value = this.plugin.settings.workColor || "#e74c3c";
+						input.addEventListener("change", async () => {
+							this.plugin.settings.workColor = input.value;
+							await this.plugin.saveSettings();
+							this.display(); // Refresh settings display
+						});
+						input.click();
+					});
+			});
+
+		// Short break color
+		new Setting(containerEl)
+			.setName("Short break color")
+			.setDesc("Color for the progress bar during short breaks (leave empty for Obsidian accent color)")
+			.addText((text) => {
+				text
+					.setPlaceholder("#3498db or leave empty")
+					.setValue(this.plugin.settings.shortBreakColor)
+					.onChange(async (value) => {
+						this.plugin.settings.shortBreakColor = value.trim();
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.setAttribute("type", "text");
+			})
+			.addExtraButton((button) => {
+				button
+					.setIcon("palette")
+					.setTooltip("Pick color")
+					.onClick(() => {
+						const input = document.createElement("input");
+						input.type = "color";
+						input.value = this.plugin.settings.shortBreakColor || "#3498db";
+						input.addEventListener("change", async () => {
+							this.plugin.settings.shortBreakColor = input.value;
+							await this.plugin.saveSettings();
+							this.display(); // Refresh settings display
+						});
+						input.click();
+					});
+			});
+
+		// Long break color
+		new Setting(containerEl)
+			.setName("Long break color")
+			.setDesc("Color for the progress bar during long breaks (leave empty for Obsidian accent color)")
+			.addText((text) => {
+				text
+					.setPlaceholder("#2ecc71 or leave empty")
+					.setValue(this.plugin.settings.longBreakColor)
+					.onChange(async (value) => {
+						this.plugin.settings.longBreakColor = value.trim();
+						await this.plugin.saveSettings();
+					});
+				text.inputEl.setAttribute("type", "text");
+			})
+			.addExtraButton((button) => {
+				button
+					.setIcon("palette")
+					.setTooltip("Pick color")
+					.onClick(() => {
+						const input = document.createElement("input");
+						input.type = "color";
+						input.value = this.plugin.settings.longBreakColor || "#2ecc71";
+						input.addEventListener("change", async () => {
+							this.plugin.settings.longBreakColor = input.value;
+							await this.plugin.saveSettings();
+							this.display(); // Refresh settings display
+						});
+						input.click();
+					});
+			});
 	}
 }
