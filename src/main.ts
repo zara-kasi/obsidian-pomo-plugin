@@ -16,10 +16,6 @@ export default class PomodoroPlugin extends Plugin {
 			(leaf) => new PomodoroView(leaf, this)
 		);
 
-		// Add ribbon icon to open Pomodoro view
-		this.addRibbonIcon("clock", "Pomodoro Timer", () => {
-			this.activateView();
-		});
 
 		// Register all commands
 		registerCommands(this);
