@@ -160,12 +160,16 @@ export class PomodoroView extends ItemView {
 		// Update timer display
 		this.timerDisplayEl.textContent = formatTime(data.timeRemaining);
 
-		// Update progress bar
-		const progress = ((data.totalTime - data.timeRemaining) / data.totalTime) * 100;
-		this.progressBarEl.style.width = `${progress}%`;
+		// Update circular progress
+		const progress = ((data.totalTime - data.timeRemaining) / data.totalTime);
+		const circumference = 2 * Math.PI * 120; // radius = 120
+		const offset = circumference * (1 - progress);
+		
+		this.progressBarEl.style.strokeDasharray = `${circumference}`;
+		this.progressBarEl.style.strokeDashoffset = `${offset}`;
 
-		// Update progress bar color based on session type
-		this.progressBarEl.className = "pomodoro-progress-bar";
+		// Update progress color based on session type
+		this.progressBarEl.className = "pomodoro-progress-circle";
 		if (data.sessionType === SessionType.WORK) {
 			this.progressBarEl.addClass("work");
 		} else if (data.sessionType === SessionType.SHORT_BREAK) {
