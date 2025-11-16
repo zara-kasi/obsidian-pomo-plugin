@@ -12,13 +12,10 @@ export interface PomodoroSettings {
 	workColor: string;
 	shortBreakColor: string;
 	longBreakColor: string;
-	// NEW: Customizable notification messages
-	workCompleteTitle: string;
-	workCompleteMessage: string;
-	shortBreakCompleteTitle: string;
-	shortBreakCompleteMessage: string;
-	longBreakCompleteTitle: string;
-	longBreakCompleteMessage: string;
+	// Simplified: Single notification message per session type
+	workCompleteNotification: string;
+	shortBreakCompleteNotification: string;
+	longBreakCompleteNotification: string;
 }
 
 export const DEFAULT_SETTINGS: PomodoroSettings = {
@@ -35,10 +32,7 @@ export const DEFAULT_SETTINGS: PomodoroSettings = {
 	workColor: "",
 	shortBreakColor: "",
 	longBreakColor: "",
-	workCompleteTitle: "Work Session Complete",
-	workCompleteMessage: "Great job! Time for a break.",
-	shortBreakCompleteTitle: "Short Break Complete",
-	shortBreakCompleteMessage: "Break's over! Ready to focus?",
-	longBreakCompleteTitle: "Long Break Complete",
-	longBreakCompleteMessage: "Refreshed and ready! Let's get back to work.",
+	workCompleteNotification: "Work session complete! Time for a break.",
+	shortBreakCompleteNotification: "Short break complete! Ready to focus?",
+	longBreakCompleteNotification: "Long break complete! Refreshed and ready to work.",
 };

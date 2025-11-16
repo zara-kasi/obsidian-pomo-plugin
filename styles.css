@@ -1,32 +1,39 @@
 .pomodoro-container {
-	padding: 20px;
+	padding: 15px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 20px;
+	gap: 15px;
 	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	box-sizing: border-box;
 }
 
 .pomodoro-session-label {
-	font-size: 1.2em;
+	font-size: clamp(0.9em, 3vw, 1.2em);
 	font-weight: 600;
 	color: var(--text-normal);
 	text-align: center;
+	flex-shrink: 0;
 }
 
 .pomodoro-circular-timer {
 	position: relative;
-	width: 280px;
-	height: 280px;
+	width: min(280px, 90vw, calc(100vh - 250px));
+	height: min(280px, 90vw, calc(100vh - 250px));
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-shrink: 0;
 }
 
 .pomodoro-circular-svg {
 	position: absolute;
 	top: 0;
 	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .pomodoro-progress-circle {
@@ -34,7 +41,7 @@
 }
 
 .pomodoro-timer-display {
-	font-size: 3.5em;
+	font-size: clamp(2em, 8vw, 3.5em);
 	font-weight: 300;
 	font-variant-numeric: tabular-nums;
 	color: var(--text-normal);
@@ -46,23 +53,27 @@
 
 .pomodoro-controls {
 	display: flex;
-	gap: 10px;
-	margin-top: 10px;
+	gap: 8px;
+	flex-wrap: wrap;
+	justify-content: center;
+	flex-shrink: 0;
+	max-width: 100%;
 }
 
 .pomodoro-button {
-	padding: 10px 20px;
-	font-size: 1em;
+	padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
+	font-size: clamp(0.85em, 2.5vw, 1em);
 	border: 2px solid var(--background-modifier-border);
 	background-color: var(--background-primary);
 	color: var(--text-normal);
 	border-radius: 8px;
 	cursor: pointer;
 	transition: all 0.2s ease;
-	min-width: 50px;
+	min-width: 45px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-shrink: 0;
 }
 
 .pomodoro-button:hover {
@@ -76,19 +87,21 @@
 }
 
 .pomodoro-button svg {
-	width: 20px;
-	height: 20px;
+	width: clamp(16px, 4vw, 20px);
+	height: clamp(16px, 4vw, 20px);
 }
 
 .pomodoro-stats {
 	margin-top: auto;
-	padding: 15px;
+	padding: clamp(10px, 3vw, 15px);
 	background-color: var(--background-secondary);
 	border-radius: 8px;
-	font-size: 1.1em;
+	font-size: clamp(0.9em, 2.5vw, 1.1em);
 	color: var(--text-muted);
 	text-align: center;
 	width: 100%;
+	box-sizing: border-box;
+	flex-shrink: 0;
 }
 
 /* Dark mode adjustments */
@@ -96,24 +109,85 @@
 	color: var(--text-normal);
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-	.pomodoro-circular-timer {
-		width: 220px;
-		height: 220px;
+/* Landscape mode optimizations */
+@media (max-height: 600px) and (orientation: landscape) {
+	.pomodoro-container {
+		padding: 10px;
+		gap: 8px;
 	}
 	
-	.pomodoro-circular-svg {
-		width: 220px;
-		height: 220px;
+	.pomodoro-circular-timer {
+		width: min(200px, 40vh);
+		height: min(200px, 40vh);
 	}
 	
 	.pomodoro-timer-display {
-		font-size: 2.5em;
+		font-size: clamp(1.5em, 6vw, 2.5em);
+	}
+	
+	.pomodoro-session-label {
+		font-size: clamp(0.8em, 2.5vw, 1em);
+	}
+	
+	.pomodoro-stats {
+		padding: 8px;
+		font-size: clamp(0.8em, 2vw, 0.95em);
+	}
+}
+
+/* Small screens / narrow sidebars */
+@media (max-width: 400px) {
+	.pomodoro-container {
+		padding: 10px;
+		gap: 12px;
+	}
+	
+	.pomodoro-circular-timer {
+		width: min(220px, 85vw);
+		height: min(220px, 85vw);
+	}
+	
+	.pomodoro-controls {
+		gap: 6px;
+	}
+}
+
+/* Very small screens */
+@media (max-width: 300px) {
+	.pomodoro-circular-timer {
+		width: min(180px, 90vw);
+		height: min(180px, 90vw);
+	}
+	
+	.pomodoro-timer-display {
+		font-size: clamp(1.5em, 10vw, 2em);
 	}
 	
 	.pomodoro-button {
-		padding: 8px 16px;
 		min-width: 40px;
+		padding: 6px 12px;
 	}
+}
+
+/* Tablet landscape */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+	.pomodoro-circular-timer {
+		width: min(240px, 50vh);
+		height: min(240px, 50vh);
+	}
+}
+
+/* Color picker swatch styles */
+.color-picker-swatch {
+	width: 40px;
+	height: 30px;
+	border-radius: 8px;
+	border: 2px solid var(--background-modifier-border);
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.color-picker-swatch:hover {
+	transform: scale(1.05);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }

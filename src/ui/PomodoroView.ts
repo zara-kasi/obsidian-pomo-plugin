@@ -45,60 +45,41 @@ export class PomodoroView extends ItemView {
 	}
 
 	private setupTimerCallbacks(): void {
-	this.timer.onTick((data) => {
-		this.updateUI(data);
-	});
+		this.timer.onTick((data) => {
+			this.updateUI(data);
+		});
 
-	this.timer.onComplete((sessionType) => {
-		if (this.plugin.settings.showNotifications) {
-			const { title, message } = this.getNotificationText(sessionType);
-			
-			// Combine title and message into a single string
-			let notificationText = "";
-			if (title && message) {
-				notificationText = `${title}\n${message}`;
-			} else if (title) {
-				notificationText = title;
-			} else if (message) {
-				notificationText = message;
+		this.timer.onComplete((sessionType) => {
+			if (this.plugin.settings.showNotifications) {
+				const notificationText = this.getNotificationText(sessionType);
+				
+				if (notificationText) {
+					new Notice(notificationText, 2000); // Display for 2 seconds
+				}
 			}
-			
-			if (notificationText) {
-				new Notice(notificationText);
+
+			if (this.plugin.settings.playSound) {
+				this.playNotificationSound();
 			}
-		}
 
-		if (this.plugin.settings.playSound) {
-			this.playNotificationSound();
-		}
+			if (this.plugin.settings.playVibration) {
+				this.playVibration();
+			}
+		});
+	}
 
-		if (this.plugin.settings.playVibration) {
-			this.playVibration();
-		}
-	});
-}
-
-	private getNotificationText(sessionType: SessionType): { title: string; message: string } {
+	private getNotificationText(sessionType: SessionType): string {
 		const settings = this.plugin.settings;
 		
 		switch (sessionType) {
 			case SessionType.WORK:
-				return {
-					title: settings.workCompleteTitle,
-					message: settings.workCompleteMessage
-				};
+				return settings.workCompleteNotification;
 			case SessionType.SHORT_BREAK:
-				return {
-					title: settings.shortBreakCompleteTitle,
-					message: settings.shortBreakCompleteMessage
-				};
+				return settings.shortBreakCompleteNotification;
 			case SessionType.LONG_BREAK:
-				return {
-					title: settings.longBreakCompleteTitle,
-					message: settings.longBreakCompleteMessage
-				};
+				return settings.longBreakCompleteNotification;
 			default:
-				return { title: "", message: "" };
+				return "";
 		}
 	}
 
@@ -257,8 +238,8 @@ export class PomodoroView extends ItemView {
 		// Check if vibration API is supported
 		if ('vibrate' in navigator) {
 			try {
-				// Vibrate in a pattern: vibrate for 200ms, pause 100ms, vibrate 200ms
-				navigator.vibrate([200, 100, 200]);
+				// Vibrate in a pattern: vibrate for 100ms, pause 100ms, vibrate 100ms
+				navigator.vibrate([100, 100, 100]);
 			} catch (error) {
 				console.error('Failed to vibrate:', error);
 			}
