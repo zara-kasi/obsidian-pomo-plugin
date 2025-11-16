@@ -284,13 +284,8 @@ export class PomodoroSettingTab extends PluginSettingTab {
 
 	// Create color preview swatch after reset button (so it appears on the right)
 	colorPreview = setting.controlEl.createDiv("color-picker-swatch");
-	colorPreview.style.width = "40px";
-	colorPreview.style.height = "30px";
-	colorPreview.style.borderRadius = "8px";
-	colorPreview.style.border = "2px solid var(--background-modifier-border)";
-	colorPreview.style.cursor = "pointer";
 	
-	// Set initial color
+	// Set initial color (only dynamic style that needs to be in JS)
 	const displayColor = currentValue || defaultValue;
 	colorPreview.style.backgroundColor = displayColor;
 
