@@ -54,7 +54,7 @@ export class PomodoroView extends ItemView {
 				const notificationText = this.getNotificationText(sessionType);
 				
 				if (notificationText) {
-					new Notice(notificationText);
+					new Notice(notificationText, 2000); // Display for 2 seconds
 				}
 			}
 
