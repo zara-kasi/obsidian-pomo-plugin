@@ -176,3 +176,18 @@
 		height: min(240px, 50vh);
 	}
 }
+
+/* Color picker swatch styles */
+.color-picker-swatch {
+	width: 40px;
+	height: 30px;
+	border-radius: 8px;
+	border: 2px solid var(--background-modifier-border);
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.color-picker-swatch:hover {
+	transform: scale(1.05);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
