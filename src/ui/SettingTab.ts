@@ -211,27 +211,14 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		containerEl.createEl("h3", { text: "Custom notification messages" });
 
 		new Setting(containerEl)
-			.setName("Work session complete title")
-			.setDesc("Title for the notification when a work session ends")
-			.addText((text) =>
-				text
-					.setPlaceholder("Work Session Complete")
-					.setValue(this.plugin.settings.workCompleteTitle)
-					.onChange(async (value) => {
-						this.plugin.settings.workCompleteTitle = value;
-						await this.plugin.saveSettings();
-					})
-			);
-
-		new Setting(containerEl)
-			.setName("Work session complete message")
-			.setDesc("Message for the notification when a work session ends")
+			.setName("Work session complete")
+			.setDesc("Notification shown when a work session ends")
 			.addTextArea((text) => {
 				text
-					.setPlaceholder("Great job! Time for a break.")
-					.setValue(this.plugin.settings.workCompleteMessage)
+					.setPlaceholder("Work session complete! Time for a break.")
+					.setValue(this.plugin.settings.workCompleteNotification)
 					.onChange(async (value) => {
-						this.plugin.settings.workCompleteMessage = value;
+						this.plugin.settings.workCompleteNotification = value;
 						await this.plugin.saveSettings();
 					});
 				text.inputEl.rows = 2;
@@ -239,27 +226,14 @@ export class PomodoroSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Short break complete title")
-			.setDesc("Title for the notification when a short break ends")
-			.addText((text) =>
-				text
-					.setPlaceholder("Short Break Complete")
-					.setValue(this.plugin.settings.shortBreakCompleteTitle)
-					.onChange(async (value) => {
-						this.plugin.settings.shortBreakCompleteTitle = value;
-						await this.plugin.saveSettings();
-					})
-			);
-
-		new Setting(containerEl)
-			.setName("Short break complete message")
-			.setDesc("Message for the notification when a short break ends")
+			.setName("Short break complete")
+			.setDesc("Notification shown when a short break ends")
 			.addTextArea((text) => {
 				text
-					.setPlaceholder("Break's over! Ready to focus?")
-					.setValue(this.plugin.settings.shortBreakCompleteMessage)
+					.setPlaceholder("Short break complete! Ready to focus?")
+					.setValue(this.plugin.settings.shortBreakCompleteNotification)
 					.onChange(async (value) => {
-						this.plugin.settings.shortBreakCompleteMessage = value;
+						this.plugin.settings.shortBreakCompleteNotification = value;
 						await this.plugin.saveSettings();
 					});
 				text.inputEl.rows = 2;
@@ -267,27 +241,14 @@ export class PomodoroSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Long break complete title")
-			.setDesc("Title for the notification when a long break ends")
-			.addText((text) =>
-				text
-					.setPlaceholder("Long Break Complete")
-					.setValue(this.plugin.settings.longBreakCompleteTitle)
-					.onChange(async (value) => {
-						this.plugin.settings.longBreakCompleteTitle = value;
-						await this.plugin.saveSettings();
-					})
-			);
-
-		new Setting(containerEl)
-			.setName("Long break complete message")
-			.setDesc("Message for the notification when a long break ends")
+			.setName("Long break complete")
+			.setDesc("Notification shown when a long break ends")
 			.addTextArea((text) => {
 				text
-					.setPlaceholder("Refreshed and ready! Let's get back to work.")
-					.setValue(this.plugin.settings.longBreakCompleteMessage)
+					.setPlaceholder("Long break complete! Refreshed and ready to work.")
+					.setValue(this.plugin.settings.longBreakCompleteNotification)
 					.onChange(async (value) => {
-						this.plugin.settings.longBreakCompleteMessage = value;
+						this.plugin.settings.longBreakCompleteNotification = value;
 						await this.plugin.saveSettings();
 					});
 				text.inputEl.rows = 2;
