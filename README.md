@@ -1,6 +1,7 @@
 # Pomo Obsidian Plugin
 
 A Pomodoro timer widget for Obsidian that lives in your sidebar.
+![sample image](Assets/pomo-widget.png)
 
 ## What is Pomo?
 
