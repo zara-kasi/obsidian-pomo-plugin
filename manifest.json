@@ -3,7 +3,7 @@
   "name": "Pomo",
   "version": "1.0.3",
   "minAppVersion": "0.15.0",
-  "description": "A simple Pomodoro timer with work sessions and breaks. Stay focused and productive!",
+  "description": "A simple Pomodoro timer.",
   "author": "Zarakasi",
   "authorUrl": "https://github.com/zara-kasi",
   "isDesktopOnly": false
