@@ -24,43 +24,54 @@ export default class PomodoroPlugin extends Plugin {
 
 		// Automatically add view to sidebar on plugin load (but don't focus it)
 		this.app.workspace.onLayoutReady(() => {
-			// Check if the view already exists
-			const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
-			
-			// Only create the view if it doesn't exist
-			if (existing.length === 0) {
-				const leaf = this.app.workspace.getRightLeaf(false);
-				if (leaf) {
-					leaf.setViewState({
-						type: VIEW_TYPE_POMODORO,
-						active: false, // Don't activate/focus it
-					}).then(() => {
-						// Use a small delay to ensure the view is fully initialized
-						setTimeout(() => {
-							if (this.settings.autoStartOnLoad) {
-								const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
-								if (leaves.length > 0) {
-									const view = leaves[0].view;
-									if (view instanceof PomodoroView) {
-										view.getTimer().start();
-									}
-								}
-							}
-						}, 100);
-					});
-				}
-			} else {
-				// View already exists, use a small delay before auto-starting
-				setTimeout(() => {
-					if (this.settings.autoStartOnLoad) {
-						const view = existing[0].view;
-						if (view instanceof PomodoroView) {
-							view.getTimer().start();
-						}
-					}
-				}, 100);
-			}
+			this.initializeView();
 		});
+	}
+
+	private async initializeView() {
+		// Check if the view already exists
+		const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
+		
+		// Only create the view if it doesn't exist
+		if (existing.length === 0) {
+			const leaf = this.app.workspace.getRightLeaf(false);
+			if (leaf) {
+				await leaf.setViewState({
+					type: VIEW_TYPE_POMODORO,
+					active: false, // Don't activate to avoid stealing focus
+				});
+			}
+		}
+		
+		// If auto-start is enabled, set a flag and start when view becomes ready
+		if (this.settings.autoStartOnLoad) {
+			// Try to start the timer with retries to handle lazy loading
+			this.attemptAutoStart();
+		}
+	}
+
+	private attemptAutoStart(retryCount = 0, maxRetries = 20) {
+		const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_POMODORO);
+		
+		if (leaves.length > 0) {
+			const view = leaves[0].view;
+			if (view instanceof PomodoroView) {
+				// Check if view is ready, if not, retry
+				if (view.isReady()) {
+					view.autoStartTimer();
+					return;
+				}
+			}
+		}
+		
+		// Retry if we haven't exceeded max retries
+		if (retryCount < maxRetries) {
+			setTimeout(() => {
+				this.attemptAutoStart(retryCount + 1, maxRetries);
+			}, 500); // Check every 500ms
+		} else {
+			console.warn('Pomodoro: Failed to auto-start timer after multiple attempts');
+		}
 	}
 
 	async onunload() {
