@@ -13,11 +13,18 @@ export class PomodoroView extends ItemView {
 	private progressCircleEl: SVGCircleElement;
 	private controlsEl: HTMLElement;
 	private statsEl: HTMLElement;
+	private isFullyInitialized = false;
+	private pendingAutoStart = false;
 
 	constructor(leaf: WorkspaceLeaf, private plugin: PomodoroPlugin) {
 		super(leaf);
 		this.timer = new PomodoroTimer(this.plugin.settings);
 		this.setupTimerCallbacks();
+		
+		// If auto-start on load is enabled, mark that we should start when ready
+		if (this.plugin.settings.autoStartOnLoad) {
+			this.pendingAutoStart = true;
+		}
 	}
 
 	getViewType(): string {
@@ -38,9 +45,22 @@ export class PomodoroView extends ItemView {
 
 		this.createUI();
 		this.updateUI(this.timer.getData());
+		
+		// Mark as fully initialized
+		this.isFullyInitialized = true;
+		
+		// If there was a pending auto-start, execute it now
+		if (this.pendingAutoStart) {
+			this.pendingAutoStart = false;
+			// Small delay to ensure everything is fully rendered
+			setTimeout(() => {
+				this.timer.start();
+			}, 100);
+		}
 	}
 
 	async onClose(): Promise<void> {
+		this.isFullyInitialized = false;
 		this.timer.cleanup();
 	}
 
@@ -180,6 +200,9 @@ export class PomodoroView extends ItemView {
 	}
 
 	private updateUI(data: TimerData): void {
+		// Only update if UI is initialized
+		if (!this.isFullyInitialized) return;
+
 		// Update session label (no emojis)
 		const label = SESSION_LABELS[data.sessionType];
 		this.sessionLabelEl.textContent = label;
@@ -209,6 +232,21 @@ export class PomodoroView extends ItemView {
 
 	getTimer(): PomodoroTimer {
 		return this.timer;
+	}
+
+	// Check if the view is ready to start the timer
+	isReady(): boolean {
+		return this.isFullyInitialized;
+	}
+
+	// Method specifically for auto-starting the timer
+	autoStartTimer(): void {
+		if (this.isFullyInitialized) {
+			this.timer.start();
+		} else {
+			// If not ready yet, mark for auto-start when onOpen() is called
+			this.pendingAutoStart = true;
+		}
 	}
 
 	private playNotificationSound(): void {
