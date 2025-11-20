@@ -1,6 +1,7 @@
 # Pomo Obsidian Plugin
 
 A Pomodoro timer widget for Obsidian that lives in your sidebar.
+
 ![sample image](Assets/pomo-widget.png)
 
 ## What is Pomo?
@@ -32,8 +33,6 @@ Start a 25-minute work session, take a 5-minute break, repeat. After 4 work sess
 
 ## License
 
-Pomo is released under the MIT License.  [MIT License](./LICENSE).  
-You are free to use, modify, and distribute Cassette in accordance with the license terms.  
-© 2025 [Zara Kasi](https://github.com/zara-kasi)
+Pomo is released under the MIT License.  [MIT License](./LICENSE).
 
 ---

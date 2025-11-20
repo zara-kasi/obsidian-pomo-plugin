@@ -14,9 +14,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		// ==================== GENERAL SETTINGS ====================
-		containerEl.createEl("h2", { text: "General Settings" });
-
 		// --- Time Durations ---
 		containerEl.createEl("h3", { text: "Time durations" });
 
@@ -162,8 +159,6 @@ export class PomodoroSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// ==================== CUSTOMIZATION ====================
-		containerEl.createEl("h2", { text: "Customization" });
 
   	// --- Progress Bar Colors ---
 		containerEl.createEl("h3", { text: "Progress bar colors" });
@@ -208,7 +203,7 @@ export class PomodoroSettingTab extends PluginSettingTab {
 		);
 
 		// --- Custom Notification Messages ---
-		containerEl.createEl("h3", { text: "Custom notification messages" });
+		containerEl.createEl("h3", { text: "Notification messages" });
 
 		new Setting(containerEl)
 			.setName("Work session complete")
